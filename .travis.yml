@@ -9,7 +9,7 @@ before_install:
   - build-dist
   - cd $BUILD_DIR
   - sudo apt-get -qq update
-  - sudo apt-get install libpango-perl libpango1.0-dev libgtk2-perl -y
+  - sudo apt-get install libpango-perl libpango1.0-dev libgtk2-perl libgtk2.0-bin libgtk2.0-dev -y
 
 script: prove -lr test.pl
 
