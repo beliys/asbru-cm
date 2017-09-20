@@ -16,3 +16,5 @@ script: prove -lr test.pl
 install:
   - cpanm --quiet --installdeps --notest Gnome2::Vte
   - cpanm --quiet --installdeps --notest Devel::Cover
+  - cpanm --quiet --installdeps --notest Test::Script
+  - cpanm --quiet --installdeps --notest Test::More
