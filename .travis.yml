@@ -8,6 +8,10 @@ before_install:
   - perl -V
   - build-dist
   - cd $BUILD_DIR
+  - sudo apt-get -qq update
+  - sudo apt-get install libpango-perl libpango1.0-dev libgtk2-perl -y
+
+script: prove -lr test.pl
 
 install:
   - cpanm --quiet --installdeps --notest Gnome2::Vte
