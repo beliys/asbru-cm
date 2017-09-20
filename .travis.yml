@@ -10,5 +10,5 @@ before_install:
   - cd $BUILD_DIR
 
 install:
-  - cpanm --quiet --notest Gnome2::Vte
-  - cpanm --quiet --notest Devel::Cover
+  - cpanm --quiet --installdeps --notest Gnome2::Vte
+  - cpanm --quiet --installdeps --notest Devel::Cover
