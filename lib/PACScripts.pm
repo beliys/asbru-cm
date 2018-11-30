@@ -414,7 +414,7 @@ sub _initGUI {
 				$$self{_WINDOWSCRIPTS}{gui}{hpane} -> pack1( $$self{_WINDOWSCRIPTS}{gui}{scroll2}, 0, 0 );
 				$$self{_WINDOWSCRIPTS}{gui}{scroll2} -> set_policy( 'automatic', 'automatic' );
 					
-					#~ $$self{_WINDOWSCRIPTS}{treeScripts} = Gtk3::Ex::Simple::List -> new_from_treeview (
+					#~ $$self{_WINDOWSCRIPTS}{treeScripts} = Gtk3::SimpleList -> new_from_treeview (
 						#~ Gtk3::TreeView -> new,
 						#~ 'FILE'		=> 'hidden',
 						#~ 'SCRIPT'	=> 'text'
@@ -487,7 +487,7 @@ sub _initGUI {
 						$$self{_WINDOWSCRIPTS}{gui}{hpanededitfunc} -> pack2( $$self{_WINDOWSCRIPTS}{gui}{scrollfunc}, 0, 0 );
 						$$self{_WINDOWSCRIPTS}{gui}{scrollfunc} -> set_policy( 'automatic', 'automatic' );
 							
-							#~ $$self{_WINDOWSCRIPTS}{treeFuncs} = Gtk3::Ex::Simple::List -> new_from_treeview (
+							#~ $$self{_WINDOWSCRIPTS}{treeFuncs} = Gtk3::SimpleList -> new_from_treeview (
 								#~ Gtk3::TreeView -> new,
 								#~ 'API NAME'	=> 'hidden',
 								#~ 'API CALL'	=> 'markup',

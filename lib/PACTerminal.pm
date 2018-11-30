@@ -513,7 +513,7 @@ sub _initGUI {
 			$$self{_GUI}{hbHist} -> pack_start( $$self{_GUI}{sk}, 1, 1, 0 );
 			$$self{_GUI}{sk} -> set_policy( 'automatic', 'automatic' );
 			$$self{_GUI}{sk} -> set_size_request( 120, 100 );
-			#~ $$self{_GUI}{treeKeys} = Gtk3::Ex::Simple::List -> new( ' HISTORY' => 'text', 'TIME' => 'hidden' );
+			#~ $$self{_GUI}{treeKeys} = Gtk3::SimpleList -> new( ' HISTORY' => 'text', 'TIME' => 'hidden' );
 			#~ $$self{_GUI}{treeKeys} -> get_selection -> set_mode( 'single' );
 			#~ $$self{_GUI}{sk} -> add( $$self{_GUI}{treeKeys} );
 			#~ $$self{_GUI}{treeKeys} -> set_headers_visible( 1 );
@@ -2812,7 +2812,7 @@ sub _wPrePostExec {
 				$sct -> set_policy( 'automatic', 'automatic' );
 
 				# Create treeview
-				$w{window}{gui}{treeview} = Gtk3::Ex::Simple::List -> new_from_treeview (
+				$w{window}{gui}{treeview} = Gtk3::SimpleList -> new_from_treeview (
 					Gtk3::TreeView -> new,
 					' EXECUTE?'			=> 'bool',
 					' LOCAL COMMAND'	=> 'text'
@@ -2991,7 +2991,7 @@ sub _wSelectChain {
 				$sct -> set_policy( 'automatic', 'automatic' );
 
 				# Create treeview
-				$w{window}{gui}{treeview} = Gtk3::Ex::Simple::List -> new_from_treeview (
+				$w{window}{gui}{treeview} = Gtk3::SimpleList -> new_from_treeview (
 					Gtk3::TreeView -> new,
 					' # '			=> 'int',
 					' ACTIVE '		=> 'bool',
@@ -3088,7 +3088,7 @@ sub _wSelectKeypress {
 				$sctxt -> set_border_width( 5 );
 
 				# Create treefound
-				$w{window}{gui}{treefound} = Gtk3::Ex::Simple::List -> new_from_treeview (
+				$w{window}{gui}{treefound} = Gtk3::SimpleList -> new_from_treeview (
 					Gtk3::TreeView -> new,
 					' Execute '			=> 'bool',
 					' Last Execution '	=> 'text',
@@ -3537,7 +3537,7 @@ sub _wFindInTerminal {
 					$sctxt -> set_border_width( 5 );
 
 					# Create treefound
-					$w{window}{gui}{treefound} = Gtk3::Ex::Simple::List -> new_from_treeview (
+					$w{window}{gui}{treefound} = Gtk3::SimpleList -> new_from_treeview (
 						Gtk3::TreeView -> new,
 						' Line # '			=> 'text',
 						' Line contents '	=> 'text'
@@ -3751,7 +3751,7 @@ sub _wHistory {
 				$sctxt -> set_border_width( 5 );
 
 				# Create treefound
-				$w{window}{gui}{treefound} = Gtk3::Ex::Simple::List -> new_from_treeview (
+				$w{window}{gui}{treefound} = Gtk3::SimpleList -> new_from_treeview (
 					Gtk3::TreeView -> new(),
 					' Execution time '	=> 'text',
 					' Command '			=> 'text',

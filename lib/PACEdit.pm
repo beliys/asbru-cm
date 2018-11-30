@@ -40,7 +40,7 @@ use Gnome2::GConf;
 
 # GTK
 use Gtk3 '-init';
-#~ use Gtk3::Ex::Simple::List;
+#~ use Gtk3::SimpleList;
 
 # PAC modules
 use PACUtils;

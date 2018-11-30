@@ -37,7 +37,7 @@ use Encode;
 
 # GTK
 use Gtk3 '-init';
-#~ use Gtk3::Ex::Simple::List;
+#~ use Gtk3::SimpleList;
 
 # PAC modules
 use PACUtils;
@@ -241,7 +241,7 @@ sub _initGUI {
 						$frame0 -> add( $scroll1 );
 						$scroll1 -> set_policy( 'automatic', 'automatic' );
 							
-							#~ $$self{_WINDOWCLUSTER}{treeTerminals} = Gtk3::Ex::Simple::List -> new_from_treeview (
+							#~ $$self{_WINDOWCLUSTER}{treeTerminals} = Gtk3::SimpleList -> new_from_treeview (
 								#~ Gtk3::TreeView -> new,
 								#~ 'Opened Terminal(s):'	=> 'text',
 								#~ 'UUID:'					=> 'hidden',
@@ -320,7 +320,7 @@ sub _initGUI {
 								$vbox5 -> pack_start( $scroll2, 1, 1, 0 );
 								$scroll2 -> set_policy( 'automatic', 'automatic' );
 									
-									#~ $$self{_WINDOWCLUSTER}{treeClustered} = Gtk3::Ex::Simple::List -> new_from_treeview (
+									#~ $$self{_WINDOWCLUSTER}{treeClustered} = Gtk3::SimpleList -> new_from_treeview (
 										#~ Gtk3::TreeView -> new,
 										#~ 'Terminal(s) in cluster:'	=> 'text',
 										#~ 'UUID:'						=> 'hidden',
@@ -441,7 +441,7 @@ sub _initGUI {
 								$vbox5clu -> pack_start( $scroll2clu, 1, 1, 0 );
 								$scroll2clu -> set_policy( 'automatic', 'automatic' );
 									
-									#~ $$self{_WINDOWCLUSTER}{treeClustered1} = Gtk3::Ex::Simple::List -> new_from_treeview (
+									#~ $$self{_WINDOWCLUSTER}{treeClustered1} = Gtk3::SimpleList -> new_from_treeview (
 										#~ Gtk3::TreeView -> new,
 										#~ 'Terminal(s) in cluster:'	=> 'text',
 										#~ 'UUID:'						=> 'hidden'
@@ -487,7 +487,7 @@ sub _initGUI {
 						my $scrollaclist = Gtk3::ScrolledWindow -> new;
 						$scrollaclist -> set_policy( 'automatic', 'automatic' );
 						$vboxaclist -> pack_start( $scrollaclist, 1, 1, 0 );
-						#~ $$self{_WINDOWCLUSTER}{treeAutocluster} = Gtk3::Ex::Simple::List -> new_from_treeview (
+						#~ $$self{_WINDOWCLUSTER}{treeAutocluster} = Gtk3::SimpleList -> new_from_treeview (
 							#~ Gtk3::TreeView -> new,
 							#~ 'AUTOCLUSTER'	=> 'text',
 						#~ );
@@ -1144,7 +1144,7 @@ sub _setupCallbacks {
 				$hboxjarl -> pack_start( $scroll, 0, 1, 0 );
 				$scroll -> set_policy( 'never', 'automatic' );
 				
-				my $tree = Gtk3::Ex::Simple::List -> new_from_treeview ( Gtk3::TreeView -> new, 'Icon' => 'pixbuf', 'Terminal(s) matching' => 'text', 'UUID' => 'hidden' );
+				my $tree = Gtk3::SimpleList -> new_from_treeview ( Gtk3::TreeView -> new, 'Icon' => 'pixbuf', 'Terminal(s) matching' => 'text', 'UUID' => 'hidden' );
 				$scroll -> add( $tree );
 				$tree -> set_headers_visible( 0 );
 				$tree -> get_selection -> set_mode( 'GTK_SELECTION_SINGLE' );

@@ -133,7 +133,7 @@ sub _initGUI {
 					$$self{_WINDOWPIPE}{gui}{scroll2} -> set_policy( 'automatic', 'automatic' );
 					$$self{_WINDOWPIPE}{gui}{frame1} -> set_border_width( 5 );
 						
-						#~ $$self{_WINDOWPIPE}{treeTerminals} = Gtk3::Ex::Simple::List -> new_from_treeview (
+						#~ $$self{_WINDOWPIPE}{treeTerminals} = Gtk3::SimpleList -> new_from_treeview (
 							#~ Gtk3::TreeView -> new,
 							#~ 'UUID_TMP'	=> 'hidden',
 							#~ 'NAME'		=> 'text',
