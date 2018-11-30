@@ -3,7 +3,7 @@ package PACMethod_tigervnc;
 ###############################################################################
 # This file is part of Ásbrú Connection Manager
 #
-# Copyright (C) 2017 Ásbrú Connection Manager team (https://asbru-cm.net)
+# Copyright (C) 2017-2018 Ásbrú Connection Manager team (https://asbru-cm.net)
 # Copyright (C) 2010-2016 David Torrejon Vaquerizas
 # 
 # Ásbrú Connection Manager is free software: you can redistribute it and/or
@@ -202,7 +202,7 @@ sub _buildGUI
 			$w{hbox1} -> pack_start( $w{frColour}, 1, 1, 0 );
 			$w{frColour} -> set_tooltip_text( 'Select the reduced colour level, or leave as automatic' );
 				
-				$w{cbColours} = Gtk3::ComboBox -> new_text;
+				$w{cbColours} = Gtk3::ComboBoxText -> new;
 				$w{frColour} -> add( $w{cbColours} );
 				foreach my $depth ( 8, 64, 256, 'AutoSelect' ) { $w{cbColours} -> append_text( $depth ); };
 		

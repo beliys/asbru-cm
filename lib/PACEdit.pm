@@ -3,7 +3,7 @@ package PACEdit;
 ###############################################################################
 # This file is part of Ásbrú Connection Manager
 #
-# Copyright (C) 2017 Ásbrú Connection Manager team (https://asbru-cm.net)
+# Copyright (C) 2017-2018 Ásbrú Connection Manager team (https://asbru-cm.net)
 # Copyright (C) 2010-2016 David Torrejon Vaquerizas
 # 
 # Ásbrú Connection Manager is free software: you can redistribute it and/or
@@ -168,7 +168,7 @@ sub _initGUI {
 	$$self{_WINDOWEDIT}	= $$self{_GLADE} -> get_object ('windowEdit');
 	$$self{_WINDOWEDIT} -> set_size_request( -1, 550 );
 	
-	_( $self, 'imgBannerEdit' ) -> set_from_file( $RES_DIR . '/pac_banner_edit.png' );
+	_( $self, 'imgBannerEdit' ) -> set_from_file( $RES_DIR . '/asbru_banner_edit.png' );
 	
 	$$self{_SPECIFIC} = PACMethod -> new;
 	_( $self, 'alignSpecific' )	-> add( $PACMethod::CONTAINER );
@@ -211,10 +211,21 @@ sub _initGUI {
 
 sub __checkRBAuth {
 	my $self = shift;
-	
+
 	if ( _( $self, 'comboMethod' ) -> get_active_text !~ /RDP|VNC|Generic|3270/go ) {
-		_( $self, 'frameExpect' )	-> set_sensitive( ! _( $self, 'rbCfgAuthManual' ) -> get_active );
-		_( $self, 'labelExpect' )	-> set_sensitive( ! _( $self, 'rbCfgAuthManual' ) -> get_active );
+		if( _( $self, 'rbCfgAuthManual' ) -> get_active ) {
+			_( $self, 'frameExpect' )->set_sensitive( 0 );
+			_( $self, 'labelExpect' )->set_sensitive( 0 );
+			_( $self, 'labelExpect' )->set_tooltip_text("Authentication is set to Manual.\nExpect disabled.");
+			_( $self, 'alignExpect' )->set_tooltip_text("Authentication is set to Manual.\nExpect disabled.");
+		}
+		else{
+			_( $self, 'frameExpect' )->set_sensitive( 1 );
+			_( $self, 'labelExpect' )->set_sensitive( 1 );
+			_( $self, 'labelExpect' )->set_tooltip_text("EXPECT remote patterns AND-THEN-EXECUTE remote commands");
+			_( $self, 'alignExpect' )->set_has_tooltip( 0 );
+
+		}
 	}
 	
 	_( $self, 'alignUserPass' )		-> set_sensitive( _( $self, 'rbCfgAuthUserPass' ) -> get_active );
@@ -342,7 +353,7 @@ sub _setupCallbacks {
 		# Populate with user defined variables
 		my @variables_menu;
 		my $i = 0;
-		foreach my $value ( @{ $$self{variables} } ) {
+		foreach my $value ( map{ $_->{txt} // '' } @{ $self->{_VARIABLES}->{cfg} } ) {
 			my $j = $i;
 			push( @variables_menu, {
 				label => "<V:$j> ($value)",
@@ -352,7 +363,7 @@ sub _setupCallbacks {
 		}
 		push( @menu_items, {
 			label => 'User variables...',
-			sensitive => scalar @{ $$self{variables} },
+			sensitive => scalar @{ $self->{_VARIABLES}->{cfg} },
 			submenu => \@variables_menu
 		} );
 		
@@ -465,7 +476,7 @@ sub _setupCallbacks {
 			# Populate with user defined variables
 			my @variables_menu;
 			my $i = 0;
-			foreach my $value ( @{ $$self{variables} } ) {
+			foreach my $value ( map{ $_->{txt} // '' } @{ $self->{_VARIABLES}->{cfg} } ) {
 				my $j = $i;
 				push( @variables_menu, {
 					label => "<V:$j> ($value)",
@@ -475,7 +486,7 @@ sub _setupCallbacks {
 			}
 			push( @menu_items, {
 				label => 'User variables...',
-				sensitive => scalar @{ $$self{variables} },
+				sensitive => scalar @{ $self->{_VARIABLES}->{cfg} },
 				submenu => \@variables_menu
 			} );
 			

@@ -3,7 +3,7 @@ package PACMain;
 ###############################################################################
 # This file is part of Ásbrú Connection Manager
 #
-# Copyright (C) 2017 Ásbrú Connection Manager team (https://asbru-cm.net)
+# Copyright (C) 2017-2018 Ásbrú Connection Manager team (https://asbru-cm.net)
 # Copyright (C) 2010-2016 David Torrejon Vaquerizas
 # 
 # Ásbrú Connection Manager is free software: you can redistribute it and/or
@@ -91,12 +91,12 @@ my $PAC_START_PROGRESS	= 0;
 my $PAC_START_TOTAL		= 6;
 
 my $APPICON			= $RES_DIR . '/asbru-logo-64.png';
-my $AUTOCLUSTERICON	= _pixBufFromFile( $RealBin . '/res/pac_cluster_auto.png' );
-my $CLUSTERICON		= _pixBufFromFile( $RealBin . '/res/pac_cluster_manager.png' );
-my $GROUPICON_ROOT	= _pixBufFromFile( $RealBin . '/res/pac_group.png' );
-my $GROUPICON		= _pixBufFromFile( $RealBin . '/res/pac_group_open_16x16.png' );
-my $GROUPICONOPEN	= _pixBufFromFile( $RealBin . '/res/pac_group_open_16x16.png' );
-my $GROUPICONCLOSED	= _pixBufFromFile( $RealBin . '/res/pac_group_closed_16x16.png' );
+my $AUTOCLUSTERICON	= _pixBufFromFile( $RealBin . '/res/asbru_cluster_auto.png' );
+my $CLUSTERICON		= _pixBufFromFile( $RealBin . '/res/asbru_cluster_manager.png' );
+my $GROUPICON_ROOT	= _pixBufFromFile( $RealBin . '/res/asbru_group.png' );
+my $GROUPICON		= _pixBufFromFile( $RealBin . '/res/asbru_group_open_16x16.png' );
+my $GROUPICONOPEN	= _pixBufFromFile( $RealBin . '/res/asbru_group_open_16x16.png' );
+my $GROUPICONCLOSED	= _pixBufFromFile( $RealBin . '/res/asbru_group_closed_16x16.png' );
 
 my $CHECK_VERSION	= 0;
 my $NEW_VERSION		= 0;
@@ -295,6 +295,9 @@ sub start {
 	Gtk3::Gdk::notify_startup_complete();
 	Glib::Idle -> add( sub {_splash( 0 ); return 0; } );
 	
+	# Show main interface
+	$$self{_GUI}{main} -> show_all;
+	
 	# Autostart selected connections
 	my @idx;
 	grep( { $$self{_CFG}{'environments'}{$_}{'startup launch'} and push( @idx, [ $_ ] ); }	keys %{ $$self{_CFG}{'environments'} } );
@@ -318,7 +321,6 @@ sub start {
 		}
 	}
 	
-	$$self{_GUI}{main} -> show_all;
 	if ( ! $$self{_CFG}{defaults}{'start iconified'} && ! $$self{_CMDLINETRAY} )	{ $$self{_GUI}{main} -> present; }
 	else												{ $self -> _hideConnectionsList; }
 	
@@ -753,7 +755,6 @@ sub _initGUI {
 						$$self{_GUI}{hbuttonbox1} -> pack_start( $$self{_GUI}{saveBtn}, 1, 1, 0 );
 						$$self{_GUI}{saveBtn} -> set( 'can-focus' => 0 );
 						$$self{_GUI}{saveBtn} -> set_sensitive( 0 );
-						$$self{_GUI}{saveBtn} -> set_tooltip_text( 'Save current configuration' );
 						
 						# Create [un]lockBtn button
 						$$self{_GUI}{lockPACBtn} = Gtk3::ToggleButton -> new;
@@ -1887,9 +1888,6 @@ sub _setupCallbacks {
 	$$self{_GUI}{nb} -> signal_connect( 'switch_page' => sub {
 		my ( $nb, $p, $pnum ) = @_;
 		
-		#if ( $pnum == 0 && $$self{_CFG}{defaults}{'tabs in main window'} && $$self{'_CFG'}{'defaults'}{'auto hide connections list'} ) { $$self{_GUI}{showConnBtn} -> set_active( 1 ); }
-		#elsif ( $$self{_CFG}{defaults}{'tabs in main window'} && $$self{'_CFG'}{'defaults'}{'auto hide connections list'} ) { $$self{_GUI}{showConnBtn} -> set_active( 0 ); }
-		
 		$$self{_PREVTAB}=$nb->get_current_page;
 
 		my $tab_page = $nb -> get_nth_page( $pnum );
@@ -1919,7 +1917,7 @@ sub _setupCallbacks {
 			last;
 		}
 		
-		$$self{_GUI}{showConnBtn} -> set_active( ( $pnum == 0 ) || ( $pnum && $$self{_CFG}{defaults}{'tabs in main window'} && ! $$self{'_CFG'}{'defaults'}{'auto hide connections list'} ) );
+		$$self{_GUI}{hbuttonbox1} -> set_visible( ( $pnum == 0 ) || ( $pnum && ! $$self{'_CFG'}{'defaults'}{'auto hide button bar'} ) );
 		
 		return 1;
 	} );
@@ -2196,7 +2194,7 @@ sub _treeConnections_menu_lite {
 	# Quick Edit variables
 	my @var_submenu;
 	my $i = 0;
-	foreach my $var ( @{ $$self{_CFG}{'environments'}{$sel[0]}{'variables'} } ) {
+	foreach my $var ( map{ $_->{txt} // '' } @{ $$self{_CFG}{'environments'}{$sel[0]}{'variables'} } ) {
 
 		my $j = $i;
 		
@@ -2212,7 +2210,7 @@ sub _treeConnections_menu_lite {
 					$var
 				);
 				! defined $new_var and return 1;
-				$$self{_CFG}{'environments'}{$sel[0]}{'variables'}[$j] = $new_var;
+				$$self{_CFG}{'environments'}{$sel[0]}{'variables'}[$j]{txt} = $new_var;
 			}
 		} );
 		
@@ -2416,7 +2414,7 @@ sub _treeConnections_menu {
 	# Quick Edit variables
 	my @var_submenu;
 	my $i = 0;
-	foreach my $var ( @{ $$self{_CFG}{'environments'}{$sel[0]}{'variables'} } ) {
+	foreach my $var ( map{ $_->{txt} // '' } @{ $$self{_CFG}{'environments'}{$sel[0]}{'variables'} } ) {
 
 		my $j = $i;
 		
@@ -2432,7 +2430,7 @@ sub _treeConnections_menu {
 					$var
 				);
 				! defined $new_var and return 1;
-				$$self{_CFG}{'environments'}{$sel[0]}{'variables'}[$j] = $new_var;
+				$$self{_CFG}{'environments'}{$sel[0]}{'variables'}[$j]{txt} = $new_var;
 			}
 		} );
 		
@@ -2654,12 +2652,12 @@ sub _showAboutWindow {
 	$dialog -> set_program_name( '' );  # name is shown in the logo
 	$dialog -> set_version( "v$APPVERSION" );
 	$dialog -> set_logo( _pixBufFromFile( $RES_DIR . '/asbru-logo-400.png' ) );
-	$dialog -> set_copyright( decode( 'UTF-8', "Copyright 2017 Ásbrú Connection Manager Project\nCopyright 2010-2016 David Torrejon Vaquerizas" ) );
+	$dialog -> set_copyright( decode( 'UTF-8', "Copyright 2017-2018 Ásbrú Connection Manager Project\nCopyright 2010-2016 David Torrejon Vaquerizas" ) );
 	$dialog -> set_website( 'https://asbru-cm.net/' );
 	$dialog -> set_license( decode( 'UTF-8', "
 Ásbrú Connection Manager
 
-Copyright 2017 Ásbrú Connection Manager project
+Copyright 2017-2018 Ásbrú Connection Manager project
 Copyright 2010-2016 David Torrejon Vaquerizas
 
 This program is free software: you can redistribute it and/or modify
@@ -2732,6 +2730,7 @@ sub _launchTerminals {
 	# Check if user wants main window to be close when a terminal comes up
 	( $$self{_CFG}{'defaults'}{'hide on connect'} && ! $$self{_CFG}{'defaults'}{'tabs in main window'} ) and $self -> _hideConnectionsList;
 	( $$self{_CFG}{'defaults'}{'tabs in main window'} && $$self{_CFG}{'defaults'}{'auto hide connections list'} ) and $$self{_GUI}{showConnBtn} -> set_active( 0 );
+	( $$self{_CFG}{'defaults'}{'auto hide button bar'} ) and $$self{_GUI}{hbuttonbox1} -> hide;
 	
 	my $wtmp;
 	scalar( @{ $terminals } ) > 1 and $wtmp = _wMessage( $$self{_GUI}{main}, "Starting '<b><big>". ( scalar( @{ $terminals } ) ) . "</big></b>' terminals...", 0 );
@@ -2779,7 +2778,7 @@ sub _launchTerminals {
 		
 		$$t{_GUI}{_VTE} -> grab_focus;
 		my $uuid	= $$t{_UUID};
-		my $icon	= $uuid eq '__PAC_SHELL__' ? Gtk3::Gdk::Pixbuf -> new_from_file_at_scale( $RES_DIR . '/pac_shell.png', 16, 16, 0 ) : $$self{_METHODS}{ $$self{_CFG}{'environments'}{$uuid}{'method'} }{'icon'};
+		my $icon	= $uuid eq '__PAC_SHELL__' ? Gtk3::Gdk::Pixbuf -> new_from_file_at_scale( $RES_DIR . '/asbru_shell.png', 16, 16, 0 ) : $$self{_METHODS}{ $$self{_CFG}{'environments'}{$uuid}{'method'} }{'icon'};
 		my $name	= $$self{_CFG}{'environments'}{$uuid}{'name'};
 		unshift( @{ $$self{_GUI}{treeHistory}{data} }, ( { value => [ $icon, $name, $uuid, 	strftime( "%H:%M:%S %d-%m-%Y", localtime( $FUNCS{_STATS}{statistics}{$uuid}{start} ) ) ] } ) );
 	}
@@ -3251,8 +3250,6 @@ sub _updateGUIPreferences {
 	#~ $$self{_GUI}{treeConnections}	-> set_enable_tree_lines( $$self{_CFG}{'defaults'}{'enable tree lines'} );
 	$$self{_GUI}{descView}			-> modify_font( Pango::FontDescription::from_string( $$self{_CFG}{'defaults'}{'info font'} ) );
 	
-	$$self{_GUI}{showConnBtn} -> set_active( ! ( ( $$self{_CFG}{'defaults'}{'auto hide connections list'} && $$self{_GUI}{nb} -> get( 'page') ) ) );
-	
 	if ( $UNITY ) {
 		( ! $$self{_GUI}{main} -> get_visible || $$self{_CFG}{defaults}{'show tray icon'} ) ? $$self{_TRAY}{_TRAY} -> set_active : $$self{_TRAY}{_TRAY} -> set_passive;
 	} else {
@@ -3261,13 +3258,7 @@ sub _updateGUIPreferences {
 	
 	$$self{_GUI}{lockPACBtn} -> set_sensitive( $$self{_CFG}{'defaults'}{'use gui password'} );
 	
-	$$self{_CFG}{defaults}{'auto save'} and $$self{_GUI}{saveBtn} -> set_label( 'Auto saving ACTIVE' );
 	$self -> _updateGUIWithUUID( $sel_uuids[0] ) if $total == 1;
-	
-	if ( $$self{_READONLY} ) {
-		$$self{_GUI}{saveBtn} -> set_label( 'READ ONLY INSTANCE' );
-		$$self{_GUI}{saveBtn} -> set_sensitive( 0 );
-	}
 	
 	return 1;
 }
@@ -4145,11 +4136,14 @@ sub _setCFGChanged {
 		$$self{_GUI}{saveBtn} -> set_sensitive( 0 );
 	} elsif ( $$self{_CFG}{defaults}{'auto save'} ) {
 		$$self{_GUI}{saveBtn} -> set_label( 'Auto saving ACTIVE' );
+		$$self{_GUI}{saveBtn} -> set_tooltip_text( 'Every configuration change will be saved automatically.  You can disable this feature in Preferences > Main Options.' );
+		$$self{_GUI}{saveBtn} -> set_sensitive( 0 );
 		$self -> _saveConfiguration( undef, 0 );
 	} else {
 		$$self{_CFG}{tmp}{changed} = $stat;
 		$$self{_GUI}{saveBtn} -> set_sensitive( $stat );
 		$$self{_GUI}{saveBtn} -> set_label( '_Save' );
+		$$self{_GUI}{saveBtn} -> set_tooltip_text( 'Save your configuration' );
 	}
 	return 1;
 }

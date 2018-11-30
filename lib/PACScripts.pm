@@ -3,7 +3,7 @@ package PACScripts;
 ###############################################################################
 # This file is part of Ásbrú Connection Manager
 #
-# Copyright (C) 2017 Ásbrú Connection Manager team (https://asbru-cm.net)
+# Copyright (C) 2017-2018 Ásbrú Connection Manager team (https://asbru-cm.net)
 # Copyright (C) 2010-2016 David Torrejon Vaquerizas
 # 
 # Ásbrú Connection Manager is free software: you can redistribute it and/or
@@ -55,7 +55,7 @@ use PACUtils;
 my $APPNAME			= $PACUtils::APPNAME;
 my $APPVERSION		= $PACUtils::APPVERSION;
 my $APPICON			= $RealBin . '/res/asbru-logo-64.png';
-my $BANNER			= $RealBin . '/res/pac_banner_scripts.png';
+my $BANNER			= $RealBin . '/res/asbru_banner_scripts.png';
 my $CFG_DIR			= $ENV{'HOME'} . '/.config/pac';
 my $SCRIPTS_DIR		= $CFG_DIR . '/scripts';
 

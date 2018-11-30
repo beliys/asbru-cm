@@ -3,7 +3,7 @@ package PACExpectEntry;
 ###############################################################################
 # This file is part of Ásbrú Connection Manager
 #
-# Copyright (C) 2017 Ásbrú Connection Manager team (https://asbru-cm.net)
+# Copyright (C) 2017-2018 Ásbrú Connection Manager team (https://asbru-cm.net)
 # Copyright (C) 2010-2016 David Torrejon Vaquerizas
 # 
 # Ásbrú Connection Manager is free software: you can redistribute it and/or
@@ -624,7 +624,7 @@ sub _buildExpect {
 		# Populate with user defined variables
 		my @variables_menu;
 		my $i = 0;
-		foreach my $value ( @{ $$self{variables} } ) {
+		foreach my $value ( map{ $_->{txt} // '' } @{ $$self{variables} } ) {
 			my $j = $i;
 			push( @variables_menu, {
 				label => "<V:$j> ($value)",
@@ -741,7 +741,7 @@ sub _buildExpect {
 		# Populate with user defined variables
 		my @variables_menu;
 		my $i = 0;
-		foreach my $value ( @{ $$self{variables} } ) {
+		foreach my $value ( map{ $_->{txt} // '' } @{ $$self{variables} } ) {
 			my $j = $i;
 			push( @variables_menu, {
 				label => "<V:$j> ($value)",
