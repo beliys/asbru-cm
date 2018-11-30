@@ -42,7 +42,7 @@ use KeePass;
 
 # GTK
 use Gtk3 '-init';
-eval { require Gtk3::SourceView2; };
+eval { require Gtk3::SourceView; };
 my $SOURCEVIEW = ! $@;
 
 # PAC modules
@@ -3597,8 +3597,8 @@ sub _wFindInTerminal {
 				$w{window}{gui}{scroll} -> set_border_width( 5 );
 
 					if ( $SOURCEVIEW ) {
-						$w{window}{buffer} = Gtk3::SourceView2::Buffer -> new( undef );
-						$w{window}{gui}{text} = Gtk3::SourceView2::View -> new_with_buffer( $w{window}{buffer} );
+						$w{window}{buffer} = Gtk3::SourceView::Buffer -> new( undef );
+						$w{window}{gui}{text} = Gtk3::SourceView::View -> new_with_buffer( $w{window}{buffer} );
 						$w{window}{gui}{text} ->set_show_line_numbers( 1 );
 						$w{window}{gui}{text} ->set_highlight_current_line( 1 );
 					} else {

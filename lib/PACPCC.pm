@@ -34,7 +34,7 @@ use Encode;
 
 # GTK
 use Gtk3 '-init';
-eval { require Gtk3::SourceView2; };
+eval { require Gtk3::SourceView; };
 my $SOURCEVIEW = ! $@;
 
 # PAC modules
@@ -58,7 +58,7 @@ if ( $SOURCEVIEW ) {
 	$LANG{'name_to_id'}{' <NO HIGHLIGHT>'}{'n'} = $i;
 	$LANG{'id_to_name'}{' <NO HIGHLIGHT>'}{'name'} = ' <NO HIGHLIGHT>';
 	$LANG{'id_to_name'}{' <NO HIGHLIGHT>'}{'n'} = $i;
-	my $LM = Gtk3::SourceView2::LanguageManager -> get_default;
+	my $LM = Gtk3::SourceView::LanguageManager -> get_default;
 	foreach my $lang_id ( sort { lc $a cmp lc $b } $LM -> get_language_ids ) {
 		++$i;
 		my $name = $LM -> get_language( $lang_id ) -> get_name;
@@ -317,8 +317,8 @@ sub _initGUI {
 						
 						# Create descView as a gtktextview with descBuffer
 						if ( $SOURCEVIEW ) {
-							$$self{_WINDOWPCC}{multiTextBuffer} = Gtk3::SourceView2::Buffer -> new( undef );
-							$$self{_WINDOWPCC}{multiTextView} = Gtk3::SourceView2::View -> new_with_buffer( $$self{_WINDOWPCC}{multiTextBuffer} );
+							$$self{_WINDOWPCC}{multiTextBuffer} = Gtk3::SourceView::Buffer -> new( undef );
+							$$self{_WINDOWPCC}{multiTextView} = Gtk3::SourceView::View -> new_with_buffer( $$self{_WINDOWPCC}{multiTextBuffer} );
 							$$self{_WINDOWPCC}{multiTextView} ->set_show_line_numbers( 1 );
 							$$self{_WINDOWPCC}{multiTextView} ->set_tab_width( 4 );
 							$$self{_WINDOWPCC}{multiTextView} ->set_indent_on_tab( 1 );
@@ -701,7 +701,7 @@ sub _setupCallbacks {
 		return 1 unless $out eq 'accept';
 		
 		# Guess the programming language of the file
-		$SOURCEVIEW and $$self{_WINDOWPCC}{multiTextBuffer} -> set_language( Gtk3::SourceView2::LanguageManager -> get_default -> guess_language( $file ) );
+		$SOURCEVIEW and $$self{_WINDOWPCC}{multiTextBuffer} -> set_language( Gtk3::SourceView::LanguageManager -> get_default -> guess_language( $file ) );
 		
 		# Loading a file should not be undoable.
 		my $content = '';
@@ -722,7 +722,7 @@ sub _setupCallbacks {
 			$$self{_WINDOWPCC}{multiTextBuffer} -> set_modified( 0 );
 			$$self{_WINDOWPCC}{multiTextBuffer} -> place_cursor( $$self{_WINDOWPCC}{multiTextBuffer} -> get_start_iter );
 			
-			my $manager = Gtk3::SourceView2::LanguageManager -> get_default;
+			my $manager = Gtk3::SourceView::LanguageManager -> get_default;
 			my $language = $manager -> guess_language( $file );
 			my $n = defined $language ? $LANG{'name_to_id'}{$language -> get_name // ' <NO HIGHLIGHT>'}{n} : 0;
 			
@@ -760,9 +760,9 @@ sub _setupCallbacks {
 		
 		if ( $SOURCEVIEW ) {
 			# Guess the programming language of the file
-			$$self{_WINDOWPCC}{multiTextBuffer} -> set_language( Gtk3::SourceView2::LanguageManager -> get_default -> guess_language( $file ) );
+			$$self{_WINDOWPCC}{multiTextBuffer} -> set_language( Gtk3::SourceView::LanguageManager -> get_default -> guess_language( $file ) );
 			
-			my $manager = Gtk3::SourceView2::LanguageManager -> get_default;
+			my $manager = Gtk3::SourceView::LanguageManager -> get_default;
 			my $language = $manager -> guess_language( $file );
 			my $n = defined $language ? $LANG{'name_to_id'}{$language -> get_name // ' <NO HIGHLIGHT>'}{n} : 0;
 			
@@ -779,7 +779,7 @@ sub _setupCallbacks {
 	$SOURCEVIEW and $$self{_WINDOWPCC}{comboLang} -> signal_connect( 'changed' => sub {
 		my $lang = $$self{_WINDOWPCC}{comboLang} -> get_active_text // return 0;
 		my $id = $LANG{'name_to_id'}{$lang}{'id'};
-		$$self{_WINDOWPCC}{multiTextBuffer} -> set_language( $lang eq ' <NO HIGHLIGHT>' ? undef : Gtk3::SourceView2::LanguageManager -> get_default -> get_language( $id ) );
+		$$self{_WINDOWPCC}{multiTextBuffer} -> set_language( $lang eq ' <NO HIGHLIGHT>' ? undef : Gtk3::SourceView::LanguageManager -> get_default -> get_language( $id ) );
 		return 0;
 	} );
 	
